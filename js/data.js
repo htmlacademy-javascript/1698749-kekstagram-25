@@ -1,5 +1,4 @@
-import {getRandomArrayElement} from './utils.js';
-import {getRandomInt} from './utils.js';
+import {getRandomArrayElement, getRandomInt} from './utils.js';
 
 
 const messages = [
