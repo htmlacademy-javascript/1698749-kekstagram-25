@@ -1,7 +1,4 @@
-import {generateTestData, generateComment} from './data.js';
-
-const newTestData = generateTestData(25);
-generateComment();
+import {newTestData} from './data.js';
 
 const list = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
@@ -15,6 +12,7 @@ newTestData.testData.forEach((item) => {
   const pictureImg = picture.querySelector('.picture__img');
   const pictureLikes = picture.querySelector('.picture__likes');
   const pictureComments = picture.querySelector('.picture__comments');
+  picture.dataset.id = item.id;
   pictureImg.src = item.url;
   pictureLikes.textContent = item.likes;
   pictureComments .textContent = item.comments.comments.length;

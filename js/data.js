@@ -22,6 +22,13 @@ const authors = [
   'Вашингтон',
 ];
 
+const description = [
+  'Прекрасное фото',
+  'Неплохой вид открывается',
+  'Сам бы лучше не сделал',
+  'Горизонт завален',
+];
+
 function generateComment (numberOfComments) {
   const comments = [];
   for (let i = 1; i < numberOfComments + 1; i++) {
@@ -43,7 +50,7 @@ function generateTestData (numberOfData = 25) {
   for (let i = 1; i < numberOfData + 1; i++) {
     testData.push({ id: i,
       url: `photos/${i}.jpg`,
-      description: 'тестовое описание для тестов',
+      description: getRandomArrayElement(description),
       likes: getRandomInt(15, 200),
       comments: generateComment(getRandomInt(1,5))
     });
@@ -52,4 +59,6 @@ function generateTestData (numberOfData = 25) {
     testData
   };
 }
-export {generateTestData};
+
+const newTestData = generateTestData(25);
+export {newTestData};
