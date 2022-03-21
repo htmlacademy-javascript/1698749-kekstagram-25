@@ -24,7 +24,7 @@ const authors = [
 
 function generateComment (numberOfComments) {
   const comments = [];
-  for (let i = 0; i < numberOfComments; i++) {
+  for (let i = 1; i < numberOfComments + 1; i++) {
     comments.push ({id: i,
       avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
       message: getRandomArrayElement(messages),
@@ -40,7 +40,7 @@ export {generateComment};
 
 function generateTestData (numberOfData = 25) {
   const testData = [];
-  for (let i = 0; i < numberOfData; i++) {
+  for (let i = 1; i < numberOfData + 1; i++) {
     testData.push({ id: i,
       url: `photos/${i}.jpg`,
       description: 'тестовое описание для тестов',
