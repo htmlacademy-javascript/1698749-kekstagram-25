@@ -1,4 +1,1 @@
-import {generateTestData, generateComment} from './data.js';
-
-generateTestData();
-generateComment();
+import './pictures.js';
