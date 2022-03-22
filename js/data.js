@@ -60,5 +60,4 @@ function generateTestData (numberOfData = 25) {
   };
 }
 
-const newTestData = generateTestData(25);
-export {newTestData};
+export {generateTestData};
