@@ -13,8 +13,6 @@ const addEscHandler =  (el) => {
 const expandPicture = (el) => {
   el.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
 };
 
 const addClickHandler = (el) => {
@@ -24,9 +22,11 @@ const addClickHandler = (el) => {
   });
 };
 
+
 function addBigPicture (newTestData, currentPictures) {
   currentPictures.forEach((item) => {
     item.addEventListener ('click', () => {
+
       //Отправляем данные из маленькой картинки в модалку
       const pictureLikes = item.querySelector ('.picture__likes').textContent;
       const pictureComments = item.querySelector ('.picture__comments').textContent;
@@ -39,7 +39,7 @@ function addBigPicture (newTestData, currentPictures) {
       modalPictureComments.textContent = pictureComments;
 
       //добавляем описание к изображению
-      const currentData = newTestData.testData[item.dataset.id];
+      const currentData = newTestData.testData[item.dataset.id-1];
       const pictureDescr = modalPicture.querySelector('.social__caption');
       pictureDescr.textContent = currentData.description;
 
@@ -57,11 +57,53 @@ function addBigPicture (newTestData, currentPictures) {
         commentsList.appendChild(newComment);
       });
 
+      const allComments = document.querySelectorAll('.social__comment');
+      //Скрываем комментарии до 5
+      for (let i=0; i < allComments.length ; i++ ) {
+        if  (i >= 5) {
+          allComments[i].classList.add('hidden');
+        }
+      }
+      let visibleComments = document.querySelectorAll('.social__comments li:not(.hidden)');
+
+      //Считаем количество комменатриев
+      const commentButton = document.querySelector('.comments-loader');
+      const allCommentCnt = document.querySelector('.comments-count');
+      const visibleCommentCnt = document.querySelector('.comments-count-visible');
+      visibleCommentCnt.textContent = visibleComments.length;
+      allCommentCnt.textContent = allComments.length;
+
+      if (allComments.length === visibleComments.length) {
+        commentButton.classList.add ('hidden');
+      }
+
+      const addCommentClickHandler = () => {
+        commentButton.addEventListener('click', () => {
+          let someCounter = '';
+          if (allComments.length >= visibleComments.length + 5) {
+            someCounter = 5;
+          }
+          else {
+            someCounter = allComments.length - visibleComments.length;
+          }
+          for (let i=1; i < visibleComments.length + someCounter; i++) {
+            allComments[i].classList.remove('hidden');
+          }
+          visibleComments = document.querySelectorAll('.social__comments li:not(.hidden)');
+          visibleCommentCnt.textContent = visibleComments.length;
+          if (allComments.length === visibleComments.length) {
+            commentButton.classList.add ('hidden');
+          }
+        });
+      };
+
       addEscHandler(modalPicture);
 
       expandPicture(modalPicture);
 
       addClickHandler(modalPicture);
+
+      addCommentClickHandler();
     });
   });
 }

@@ -12,7 +12,7 @@ function addPictures (newTestData) {
     picture.dataset.id = item.id;
     pictureImg.src = item.url;
     pictureLikes.textContent = item.likes;
-    pictureComments .textContent = item.comments.comments.length;
+    pictureComments.textContent = item.comments.comments.length;
     similarListFragment.appendChild(picture);
     list.appendChild(similarListFragment);
   });
