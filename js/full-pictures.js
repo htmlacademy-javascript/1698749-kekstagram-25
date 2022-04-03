@@ -61,7 +61,7 @@ function addBigPicture (newTestData, currentPictures) {
       //Скрываем комментарии до 5
       for (let i=0; i < allComments.length ; i++ ) {
         if  (i >= 5) {
-          allComments[i].classList.add('hidden');
+          allComments[i].hidden = true;
         }
       }
       let visibleComments = document.querySelectorAll('.social__comments li:not(.hidden)');
