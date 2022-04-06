@@ -1,12 +1,15 @@
-import {generateTestData} from './data.js';
+// import {generateTestData} from './data.js';
 import {addPictures} from'./pictures.js';
-import {addBigPicture} from './full-pictures.js';
+import {setUserFormSubmit} from './form.js';
 import {addUploadHandler} from './form.js';
-import {ChangeUp} from './customize.js';
+import {changeUp} from './customize.js';
+import {getData} from './api.js';
 
-const newTestData = generateTestData(25);
-addPictures (newTestData);
-const currentPictures = document.querySelectorAll ('.picture');
-addBigPicture (newTestData, currentPictures);
-addUploadHandler();
-ChangeUp ();
+
+const uploadInput = document.querySelector ('#upload-file');
+
+getData(addPictures);
+addUploadHandler(uploadInput);
+setUserFormSubmit();
+changeUp ();
+

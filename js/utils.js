@@ -15,4 +15,13 @@ export {getCommentLenght};
 function getRandomArrayElement (elements) {
   return elements[getRandomInt(0, elements.length - 1)];
 }
-export {getRandomArrayElement};
+
+function removeClassByPrefix (el, prefix) {
+  const regx = new RegExp(`\\b${prefix}.*$\\b`,'g');
+  el.className = el.className.replace(regx, '');
+  return el;
+}
+
+export {getRandomArrayElement, removeClassByPrefix};
+
+

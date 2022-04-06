@@ -39,7 +39,7 @@ function addBigPicture (newTestData, currentPictures) {
       modalPictureComments.textContent = pictureComments;
 
       //добавляем описание к изображению
-      const currentData = newTestData.testData[item.dataset.id-1];
+      const currentData = newTestData[item.dataset.id];
       const pictureDescr = modalPicture.querySelector('.social__caption');
       pictureDescr.textContent = currentData.description;
 
@@ -47,7 +47,7 @@ function addBigPicture (newTestData, currentPictures) {
       commentsList.innerHTML = '';
 
       //добавляем комментарии к изображению
-      currentData.comments.comments.forEach((dataComment) => {
+      currentData.comments.forEach((dataComment) => {
         const newComment = newCommentTemplate.cloneNode(true);
         const comment = newComment.querySelector('img');
         const commentText = newComment.querySelector ('p');
@@ -61,7 +61,7 @@ function addBigPicture (newTestData, currentPictures) {
       //Скрываем комментарии до 5
       for (let i=0; i < allComments.length ; i++ ) {
         if  (i >= 5) {
-          allComments[i].hidden = true;
+          allComments[i].classList.add('hidden');
         }
       }
       let visibleComments = document.querySelectorAll('.social__comments li:not(.hidden)');
