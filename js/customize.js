@@ -1,4 +1,6 @@
 import '../nouislider/nouislider.js';
+import {removeClassByPrefix} from './utils.js';
+
 const previewPicture = document.querySelector('.img-upload__preview');
 const previewPictureImg = previewPicture.querySelector ('.img-upload__preview img');
 const smallerButton = document.querySelector('.scale__control--smaller');
@@ -141,14 +143,9 @@ const addClickHandlerStyles = () => {
 };
 
 
-// Для эффекта «Фобос» — filter: blur(0..3px) с шагом 0.1px;
-// Для эффекта «Зной» — filter: brightness(1..3) с шагом 0.1;
-// Для эффекта «Оригинал» CSS-стили filter удаляются.
-// При выборе эффекта «Оригинал» слайдер скрывается.
-// При переключении эффектов, уровень насыщенности сбрасывается до начального значения (100%): слайдер, CSS-стиль изображения и значение поля должны обновляться.
-
 scaleValue.value = '100%';
 let currentValue = parseInt(scaleValue.value, 10)/100;
+previewPictureImg.style.transform = `scale(${currentValue})`;
 
 const addClickHandlerBigger = () => {
   biggerButton.addEventListener('click', () => {
@@ -170,20 +167,13 @@ const addClickHandlerSmaller = () => {
   });
 };
 
-function removeClassByPrefix(el, prefix) {
-  const regx = new RegExp(`\\b${prefix}.*$\\b`,'g');
-  el.className = el.className.replace(regx, '');
-  return el;
-}
-
-function ChangeUp () {
+function changeUp () {
   addClickHandlerBigger();
   addClickHandlerSmaller();
 
   addClickHandlerStyles();
 }
 
-
-export {ChangeUp};
+export {changeUp};
 
 

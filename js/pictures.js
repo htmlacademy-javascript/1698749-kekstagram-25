@@ -4,7 +4,7 @@ const newPictureTemplate = pictureTemplate.querySelector('.picture');
 const similarListFragment = document.createDocumentFragment();
 
 function addPictures (newTestData) {
-  newTestData.testData.forEach((item) => {
+  newTestData.forEach((item) => {
     const picture = newPictureTemplate.cloneNode(true);
     const pictureImg = picture.querySelector('.picture__img');
     const pictureLikes = picture.querySelector('.picture__likes');
@@ -12,7 +12,7 @@ function addPictures (newTestData) {
     picture.dataset.id = item.id;
     pictureImg.src = item.url;
     pictureLikes.textContent = item.likes;
-    pictureComments.textContent = item.comments.comments.length;
+    pictureComments.textContent = item.comments.length;
     similarListFragment.appendChild(picture);
     list.appendChild(similarListFragment);
   });
