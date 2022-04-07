@@ -22,6 +22,7 @@ const getData = (onSuccess) => {
       onSuccess(newTestData);
       const currentPictures = document.querySelectorAll ('.picture');
       addBigPicture (newTestData, currentPictures);
+      document.querySelector('.img-filters').classList.remove ('img-filters--inactive');
     })
     .catch((error) => {
       showAlert(`Что-то пошло не так: ${error}`);
