@@ -1,4 +1,3 @@
-
 function getRandomInt (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -22,6 +21,14 @@ function removeClassByPrefix (el, prefix) {
   return el;
 }
 
-export {getRandomArrayElement, removeClassByPrefix};
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomArrayElement, removeClassByPrefix, debounce};
 
 
