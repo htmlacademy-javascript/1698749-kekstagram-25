@@ -5,6 +5,24 @@ const pictureTemplate = document.querySelector('#picture').content;
 const newPictureTemplate = pictureTemplate.querySelector('.picture');
 const similarListFragment = document.createDocumentFragment();
 
+
+const addPictures = (newTestData) => {
+  newTestData.slice()
+    .forEach((item) => {
+      const picture = newPictureTemplate.cloneNode(true);
+      const pictureImg = picture.querySelector('.picture__img');
+      const pictureLikes = picture.querySelector('.picture__likes');
+      const pictureComments = picture.querySelector('.picture__comments');
+      picture.dataset.id = item.id;
+      pictureImg.src = item.url;
+      pictureLikes.textContent = item.likes;
+      pictureComments.textContent = item.comments.length;
+      similarListFragment.innerHTML = '';
+      similarListFragment.appendChild(picture);
+    });
+  list.appendChild(similarListFragment);
+};
+
 const addFilterClickHandler = (pictures) => {
   let processChange = debounce(() => addPictures(pictures));
   const buttonDefault = document.querySelector('#filter-default');
@@ -22,7 +40,8 @@ const addFilterClickHandler = (pictures) => {
     processChange (pictures.sort((a, b) => a.id - b.id));
   });
   buttonRandom.addEventListener('click', () => {
-    processChange = debounce(() => addPictures(pictures.slice(0,10)));
+    const slicePart = 10;
+    processChange = debounce(() => addPictures(pictures.slice(0,slicePart)));
     const element = document.querySelectorAll('.pictures .picture');
     element.forEach((el) => {
       el.remove();
@@ -44,22 +63,5 @@ const addFilterClickHandler = (pictures) => {
     processChange(pictures.sort((a, b) => b.likes - a.likes));
   });
 };
-
-function addPictures (newTestData) {
-  newTestData.slice()
-    .forEach((item) => {
-      const picture = newPictureTemplate.cloneNode(true);
-      const pictureImg = picture.querySelector('.picture__img');
-      const pictureLikes = picture.querySelector('.picture__likes');
-      const pictureComments = picture.querySelector('.picture__comments');
-      picture.dataset.id = item.id;
-      pictureImg.src = item.url;
-      pictureLikes.textContent = item.likes;
-      pictureComments.textContent = item.comments.length;
-      similarListFragment.innerHTML = '';
-      similarListFragment.appendChild(picture);
-    });
-  list.appendChild(similarListFragment);
-}
 
 export {addFilterClickHandler, addPictures};
