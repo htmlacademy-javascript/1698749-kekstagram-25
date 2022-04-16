@@ -15,5 +15,3 @@ const debounce = (callback, timeoutDelay = 500) => {
 };
 
 export {removeClassByPrefix, debounce, isEscapeKey};
-
-
