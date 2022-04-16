@@ -1,13 +1,16 @@
+import {isEscapeKey} from './utils.js';
+
 const modalPicture = document.querySelector('.big-picture');
 const commentsList = document.querySelector ('.social__comments');
 const newCommentTemplate = document.querySelector ('#comment').content;
 
 const addEscHandler =  (el) => {
   addEventListener('keydown', (event) => {
-    const key = event.key;
-    if (key === 'Escape') {
+    if (isEscapeKey(event)) {
+      event.preventDefault();
       el.classList.add('hidden');}
   });
+  document.removeEventListener('keydown', addEscHandler);
 };
 
 const expandPicture = (el) => {
@@ -20,13 +23,13 @@ const addClickHandler = (el) => {
   closeButton.addEventListener('click', () => {
     el.classList.add('hidden');
   });
+  document.removeEventListener('keydown', addEscHandler);
 };
 
 
-function addBigPicture (newTestData, currentPictures) {
+const addBigPicture = (newTestData, currentPictures) => {
   currentPictures.forEach((item) => {
     item.addEventListener ('click', () => {
-
       //Отправляем данные из маленькой картинки в модалку
       const pictureLikes = item.querySelector ('.picture__likes').textContent;
       const pictureComments = item.querySelector ('.picture__comments').textContent;
@@ -73,9 +76,11 @@ function addBigPicture (newTestData, currentPictures) {
       visibleCommentCnt.textContent = visibleComments.length;
       allCommentCnt.textContent = allComments.length;
 
+
       if (allComments.length === visibleComments.length) {
         commentButton.classList.add ('hidden');
       }
+      else {commentButton.classList.remove ('hidden');}
 
       const addCommentClickHandler = () => {
         commentButton.addEventListener('click', () => {
@@ -106,6 +111,6 @@ function addBigPicture (newTestData, currentPictures) {
       addCommentClickHandler();
     });
   });
-}
+};
 
 export {addBigPicture};
