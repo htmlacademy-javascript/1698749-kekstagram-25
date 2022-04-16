@@ -1,27 +1,25 @@
 import {addBigPicture} from './full-pictures.js';
+import {showAlert} from './form.js';
 
-const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fonSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backGroundColor = 'red';
-  alertContainer.style.textContent = message;
-  document.body.append(alertContainer);
-};
-
-const getData = (onSuccess) => {
+const getData = (onSuccess, howToSort = 'default') => {
   fetch('https://25.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((newTestData) => {
+      const fullTestData = newTestData.slice();
+      switch (howToSort) {
+        case 'default':
+          newTestData = newTestData.sort((a, b) => a.id - b.id);
+          break;
+        case 'random':
+          newTestData = newTestData.sort(() => Math.random() - 0.5).slice(0, 10);
+          break;
+        case 'discussed':
+          newTestData = newTestData.sort((a, b) => b.comments.length - a.comments.length);
+          break;}
       onSuccess(newTestData);
       const currentPictures = document.querySelectorAll ('.picture');
-      addBigPicture (newTestData, currentPictures);
+      addBigPicture (fullTestData, currentPictures);
+      document.querySelector('.img-filters').classList.remove ('img-filters--inactive');
     })
     .catch((error) => {
       showAlert(`Что-то пошло не так: ${error}`);

@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {removeClassByPrefix} from './utils.js';
+import {removeClassByPrefix, isEscapeKey} from './utils.js';
 
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector ('#upload-file');
@@ -29,8 +29,8 @@ const showAlert = (message) => {
 
 const addEscHandler =  (el) => {
   addEventListener('keydown', (event) => {
-    const key = event.key;
-    if (key === 'Escape') {
+    if (isEscapeKey(event)) {
+      event.preventDefault();
       if (document.querySelector('.text__hashtags') !== document.activeElement && document.querySelector('.text__description') !== document.activeElement) {
         el.classList.add('hidden');
         document.querySelector('body').classList.remove('modal-open');
@@ -40,6 +40,7 @@ const addEscHandler =  (el) => {
       document.querySelector('#success').classList.add('hidden');
     }
   });
+  document.removeEventListener('keydown', addEscHandler);
 };
 
 const expandPicture = (el) => {
@@ -49,6 +50,7 @@ const expandPicture = (el) => {
   scaleValue.value = '100%';
   previewPicture.style.filter = 'none';
   imgPreview.style.transform = 'scale(1)';
+  addEscHandler(uploadOverlay);
 };
 
 const addClickHandlerAlert = (el) => {
@@ -63,6 +65,7 @@ const addClickHandlerAlert = (el) => {
     document.querySelector('body').classList.remove('modal-open');
     el.closest('section').classList.add('hidden');
   });
+  document.removeEventListener('keydown', addEscHandler);
 };
 
 const addClickHandler = (el) => {
@@ -75,20 +78,18 @@ const addClickHandler = (el) => {
   });
 };
 
-function addUploadHandler () {
+const addUploadHandler = () => {
   uploadInput.addEventListener ('change', () => {
     const [file] = uploadInput.files;
     if (file) {
       imgPreview.src = URL.createObjectURL(file);
     }
 
-    addEscHandler(uploadOverlay);
-
     expandPicture(uploadOverlay);
 
     addClickHandler(uploadOverlay);
   });
-}
+};
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__text__item', // Элемент, на который будут добавляться классы
@@ -99,9 +100,39 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__text__item__error' // Класс для элемента с текстом ошибки
 });
 
-function validateComment (value) {
-  return value.length <= 140;
-}
+const hashSame = () => {
+  const newHash = document.querySelector ('.text__hashtags').value.trim().split(' ');
+  for (let i = 0; i < newHash.length-1; i++) {
+    newHash[i].toLowerCase();
+    for (let j = i+1; j < newHash.length; j++){
+      if (newHash[i] === newHash[j]){
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const hashLength = () => {
+  const newHash = document.querySelector ('.text__hashtags').value.trim().split(' ');
+  return (newHash.length <= 5);
+};
+
+const hashExpression = () => {
+  const re = new RegExp('(#)([А-яA-z0-9]{1,19})');
+  let newHash = document.querySelector ('.text__hashtags').value;
+  if (newHash !== '') {
+    newHash = newHash.trim().split(' ');
+    for (let i = 0; i < newHash.length; i++) {
+      if (!re.test(newHash[i])){
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const validateComment = (value) => value.length <= 140;
 
 pristine.addValidator(
   uploadForm.querySelector('.text__hashtags'),
@@ -127,37 +158,6 @@ pristine.addValidator(
   validateComment,
   'Комментарий не должен быть больше 140 символов'
 );
-
-function hashLength () {
-  const newHash = document.querySelector ('.text__hashtags').value.trim().split(' ');
-  if (newHash.length > 5){
-    return false;
-  }
-  return true;
-}
-
-
-function hashSame () {
-  const newHash = document.querySelector ('.text__hashtags').value.trim().split(' ');
-  for (let i = 0; i < newHash.length-1; i++) {
-    newHash[i].toLowerCase();
-    if (newHash[i] === newHash[i+1]){
-      return false;
-    }
-  }
-  return true;
-}
-
-function hashExpression () {
-  const re = new RegExp('(#)([А-яA-z0-9]{1,19})');
-  const newHash = document.querySelector ('.text__hashtags').value.trim().split(' ');
-  for (let i = 0; i < newHash.length; i++) {
-    if (!re.test(newHash[i])){
-      return false;
-    }
-  }
-  return true;
-}
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -211,5 +211,4 @@ const setUserFormSubmit = (onSuccess, onFail) => {
 };
 
 
-export {setUserFormSubmit};
-export {addUploadHandler};
+export {setUserFormSubmit, showAlert, addUploadHandler};
